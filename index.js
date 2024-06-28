@@ -93,7 +93,11 @@ const blogSchema = new mongoose.Schema({
   blogContent: {
     type: String,
     required: true,
-  }
+  },
+  images: {
+    type:String,
+    required: true,
+  },
 });
 
 const blogModel=mongoose.model('blog',blogSchema);
@@ -117,13 +121,24 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 
-app.post("/sendBlog", async(req, res) => {
+// app.post("/sendBlog", async(req, res) => {
+//   console.log(req.body);
+
+//   const blogToSave= new blogModel(req.body);
+//   await blogToSave.save();
+//   res.json("Blog Posted Successfully...");
+// });
+
+app.post("/sendBlog", upload.single("image"), (req, res) => {
   console.log(req.body);
 
-  const blogToSave= new blogModel(req.body);
-  await blogToSave.save();
-  res.json("Blog Posted Successfully...");
+  const { name, title, blogContent } = req.body;
+  const image = req.file.path;
+  const dataToSave = new blogModel({ name, title, blogContent, image });
+
+  dataToSave.save().then(() => res.json("Blog Saved Successfully... :)"));
 });
+
 
 // app.get("/Data", async (req, res) => {
 //   try {
