@@ -28,6 +28,7 @@ app.use(express.json());
 mongoose
    .connect("mongodb+srv://"+username+":"+password+"@cluster0.tyqgw9n.mongodb.net/firstDB?retryWrites=true&w=majority&appName=Cluster0")
  // .connect("mongodb://127.0.0.1:27017/firstDB")
+ //deploying
   .then(() =>
     app.listen(port, () => console.log("Server started at port " + port))
   );
