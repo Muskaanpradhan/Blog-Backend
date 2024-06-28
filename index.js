@@ -26,7 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 mongoose
-  .connect("mongodb+srv://"+username+":"+password+"@cluster0.tyqgw9n.mongodb.net/firstDB?retryWrites=true&w=majority&appName=Cluster0")
+   .connect("mongodb+srv://"+username+":"+password+"@cluster0.tyqgw9n.mongodb.net/firstDB?retryWrites=true&w=majority&appName=Cluster0")
+ // .connect("mongodb://127.0.0.1:27017/firstDB")
   .then(() =>
     app.listen(port, () => console.log("Server started at port " + port))
   );
@@ -94,7 +95,7 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  images: {
+  image: {
     type:String,
     required: true,
   },
@@ -136,6 +137,7 @@ app.post("/sendBlog", upload.single("image"), (req, res) => {
 
   const { name, title, blogContent } = req.body;
   const image = req.file.path;
+  console.log(image)
   const dataToSave = new blogModel({ name, title, blogContent, image });
 
   dataToSave.save().then(() => res.json("Blog Saved Successfully... :)"));
