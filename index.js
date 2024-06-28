@@ -100,6 +100,8 @@ const blogSchema = new mongoose.Schema({
   },
 });
 
+//deploying
+
 const blogModel=mongoose.model('blog',blogSchema);
 
 app.use(express.urlencoded({ extended: true }));
