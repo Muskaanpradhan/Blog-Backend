@@ -1,7 +1,14 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import multer from "multer";
+import path from "path"
+import { fileURLToPath } from "url";
 import 'dotenv/config';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const app = express();
 const port = 5000;
@@ -93,6 +100,22 @@ const blogModel=mongoose.model('blog',blogSchema);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/");
+  },
+
+  filename: (req, file, cb) => {
+    cb(null,` ${file.fieldname}-${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 
 app.post("/sendBlog", async(req, res) => {
   console.log(req.body);
